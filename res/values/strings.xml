@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">打地鼠</string>
+    <string name="app_name">dishu</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="score">0</string>
+    <string name="title_activity_statistics">StatisticsActivity</string>
+    <string name="label">得分</string>
 
 </resources>
