@@ -2,22 +2,23 @@ package com.jelly.dishu;
 
 import java.util.Random;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	ImageView im1, im2, im3, im4, im5, im6, im7, im8, im9;
@@ -27,6 +28,7 @@ public class MainActivity extends Activity {
 	boolean continueYesNo = true;
 	TextView tv ;
 	Thread mainThread;
+	Button send;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,6 +36,7 @@ public class MainActivity extends Activity {
 		// MyView myView = new MyView(this);
 		// setContentView(myView);
 		setContentView(R.layout.activity_main);
+		send = (Button)findViewById(R.id.sendSMS);
 		tv = (TextView)findViewById(R.id.textView1);
 		im1 = (ImageView) findViewById(R.id.ImageView01);
 		im2 = (ImageView) findViewById(R.id.ImageView02);
@@ -58,8 +61,20 @@ public class MainActivity extends Activity {
 		// timer.schedule(task, 1000,1000);
 			mainThread = new Thread(new MyThread());
 			mainThread.start();
+			
+			send.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					SmsManager sms = SmsManager.getDefault();
+					sms.sendTextMessage("",null, "hello", null, null);
+					
+				}
+			});
 	}
-
+/**
+ * listView item的点击事件
+ */
 	public OnClickListener clickedView = new OnClickListener() {
 
 		@Override
@@ -106,8 +121,10 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	@SuppressLint("HandlerLeak")
 	Handler scoreHandler = new Handler(){
 
+		@SuppressLint("HandlerLeak")
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -115,6 +132,7 @@ public class MainActivity extends Activity {
 		}
 		
 	};
+	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
