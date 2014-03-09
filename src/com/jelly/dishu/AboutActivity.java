@@ -1,10 +1,5 @@
 package com.jelly.dishu;
 
-import com.jelly.dishu.fragment.AboutFragment;
-import com.jelly.dishu.fragment.FAQFragment;
-import com.jelly.dishu.fragment.FeedFragment;
-import com.jelly.dishu.fragment.RulerFragment;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,9 +14,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.jelly.dishu.fragment.AboutFragment;
+import com.jelly.dishu.fragment.FAQFragment;
+import com.jelly.dishu.fragment.FeedFragment;
+import com.jelly.dishu.fragment.RulerFragment;
 
 public class AboutActivity extends FragmentActivity {
 
@@ -45,6 +46,7 @@ public class AboutActivity extends FragmentActivity {
 		listView = (ListView)findViewById(R.id.listView);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OptionClicked());
+
 	}
 
 	@Override
