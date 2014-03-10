@@ -23,7 +23,7 @@ public class FeedFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				SmsManager sms = SmsManager.getDefault();
-				sms.sendTextMessage("18070406603", null, "hello", null, null);
+				sms.sendTextMessage("15970635077", null, "hello", null, null);
 			}
 		});
 		return rootView;
