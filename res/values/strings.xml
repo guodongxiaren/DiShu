@@ -11,5 +11,6 @@
     <string name="send">发送</string>
     <string name="feedback">建议反馈</string>
     <string name="feedhint">注意:点击发送将发送一条短信到开发者手机</string>
+    <string name="title_activity_start">StartActivity</string>
 
 </resources>

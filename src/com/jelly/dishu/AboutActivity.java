@@ -1,6 +1,7 @@
 package com.jelly.dishu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,11 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,7 +34,7 @@ public class AboutActivity extends FragmentActivity {
 	int[] icons = {R.drawable.rule,R.drawable.wenhao,
 			R.drawable.tanhao,R.drawable.xinfeng};
 	FragmentManager fragmentManager;
-
+	ImageButton backStart;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,12 +45,26 @@ public class AboutActivity extends FragmentActivity {
 		ArrayAdapter<String> adapter = new OptionAdapter(this,R.layout.list_item, R.id.option, options);
 		fragmentManager = this.getSupportFragmentManager();
 		
+		backStart = (ImageButton)findViewById(R.id.back_start);
+		backStart.setOnClickListener(back);
+		
 		listView = (ListView)findViewById(R.id.listView);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OptionClicked());
 
 	}
-
+	/**
+	 * 返回按钮的单击事件
+	 */
+	OnClickListener back = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(AboutActivity.this,StartActivity.class);
+			startActivity(intent);
+			AboutActivity.this.finish();
+		}
+	};
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.about, menu);

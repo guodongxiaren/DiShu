@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,7 +15,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,7 +65,8 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			if (v.getBackground() != null) {
+			if (!v.getBackground().equals(new ColorDrawable(Color.argb(0, 0, 0, 0)))) {
+				Log.i("tag", ""+v.getBackground().toString());
 				Message msg = new Message();
 				score+=50;
 				msg.what=score;
