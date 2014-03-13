@@ -58,9 +58,18 @@ public class MainActivity extends Activity {
 			mainThread = new Thread(new MyThread());
 			mainThread.start();
 			
+			DSEngine.musicThread = new Thread(){
+				public void run(){
+					Intent bgmusic = new Intent(
+							getApplicationContext(),DSMusic.class);
+					startService(bgmusic);
+					DSEngine.context = getApplicationContext();
+				}
+			};
+			DSEngine.musicThread.start();	
 	}
 /**
- * listView itemç‚¹å‡»äº‹ä»¶*/
+ * listView itemµã»÷ÊÂ¼þ*/
 	public OnClickListener clickedView = new OnClickListener() {
 
 		@Override
