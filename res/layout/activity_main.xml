@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/block" >
+    android:background="@drawable/prairie" >
 
     <ImageView
         android:id="@+id/imageView1"
@@ -9,6 +9,8 @@
         android:layout_height="118dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:src="@drawable/dishu" 
+        android:visibility="invisible"
         />
 
     <ImageView
@@ -16,50 +18,45 @@
         android:layout_width="81dp"
         android:layout_height="118dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
-
-    <ImageView
-        android:id="@+id/ImageView03"
-        android:layout_width="81dp"
-        android:layout_height="118dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="94dp"
-        android:layout_toRightOf="@+id/ImageView01" />
+        android:src="@drawable/dishu" 
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/ImageView04"
         android:layout_width="81dp"
         android:layout_height="118dp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/imageView1" />
+        android:layout_toRightOf="@+id/imageView1"
+        android:src="@drawable/dishu" 
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/ImageView01"
         android:layout_width="81dp"
         android:layout_height="118dp"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/ImageView04" />
+        android:layout_toRightOf="@+id/ImageView04"
+        android:src="@drawable/dishu" 
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/ImageView05"
         android:layout_width="81dp"
         android:layout_height="118dp"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/ImageView04" />
-
-    <ImageView
-        android:id="@+id/ImageView07"
-        android:layout_width="81dp"
-        android:layout_height="118dp"
-        android:layout_below="@+id/ImageView01"
-        android:layout_toRightOf="@+id/ImageView01" />
+        android:layout_toRightOf="@+id/ImageView04"
+        android:src="@drawable/dishu" 
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/ImageView06"
         android:layout_width="81dp"
         android:layout_height="118dp"
         android:layout_alignLeft="@+id/ImageView03"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/dishu" 
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/textView1"
@@ -76,10 +73,39 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ImageView07"
+        android:layout_above="@+id/textView1"
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/label" />
+
+    <ImageView
+        android:id="@+id/ImageView07"
+        android:layout_width="81dp"
+        android:layout_height="118dp"
+        android:layout_below="@+id/textView1"
+        android:layout_toLeftOf="@+id/ImageView06"
+        android:layout_marginRight="30dp"
+        android:src="@drawable/dishu"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/ImageView08"
+        android:layout_width="81dp"
+        android:layout_height="118dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="30dp"
+        android:layout_toLeftOf="@+id/ImageView03"
+        android:src="@drawable/dishu"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/ImageView03"
+        android:layout_width="81dp"
+        android:layout_height="118dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/textView1"
+        android:src="@drawable/dishu"
+        android:visibility="invisible" />
 
 </RelativeLayout>
