@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -117,11 +118,7 @@ public class MainActivity extends Activity {
 			intent.putExtras(b);
 			startActivity(intent);
 			MainActivity.this.finish();
-			/*
-			 * close the background music πÿ±’±≥æ∞“Ù¿÷
-			 */
-			Intent bgmusic = new Intent(getApplicationContext(), DSMusic.class);
-			MainActivity.this.stopService(bgmusic);
+			closeMusic();
 		}
 	}
 
@@ -200,5 +197,20 @@ public class MainActivity extends Activity {
 		}
 
 	};
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		closeMusic();
+		return super.onKeyDown(keyCode, event);
+	}
+
+	public void closeMusic() {
+		/*
+		 * close the background music πÿ±’±≥æ∞“Ù¿÷
+		 */
+		Intent bgmusic = new Intent(getApplicationContext(), DSMusic.class);
+		MainActivity.this.stopService(bgmusic);
+	}
+	
 
 }

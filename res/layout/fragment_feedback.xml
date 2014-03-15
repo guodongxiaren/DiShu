@@ -15,7 +15,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/editText"
         android:gravity="top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,14 +35,14 @@
         android:layout_marginBottom="5dp"
         android:text="@string/feedhint"
         android:textSize="13sp"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/editText"
         android:textAppearance="?android:attr/textAppearanceLarge" />
         <Button
         android:id="@+id/sendSMS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/send"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/editText"
         android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

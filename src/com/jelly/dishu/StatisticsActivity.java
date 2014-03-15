@@ -39,10 +39,10 @@ public class StatisticsActivity extends Activity {
 		Log.i("after", sp.getInt("MAX_SCORE", 0)+"");
 		AlertDialog.Builder builder = new Builder(this);
 		if (excel)
-			builder.setTitle("破记录");
+			builder.setTitle("恭喜！破记录");
 		else
-			builder.setTitle("历史最高分" + s);
-		builder.setMessage("您的得分 " + score + "！");
+			builder.setTitle("最高纪录为" + s);
+		builder.setMessage("本次得分 " + score + "！");
 		builder.setPositiveButton("退出", new DialogInterface.OnClickListener() {
 
 			@Override

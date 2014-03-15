@@ -34,6 +34,7 @@ public class AboutActivity extends FragmentActivity {
 	int[] icons = {R.drawable.rule,R.drawable.wenhao,
 			R.drawable.tanhao,R.drawable.xinfeng};
 	FragmentManager fragmentManager;
+	Fragment myFragment ;
 	ImageButton backStart;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class AboutActivity extends FragmentActivity {
 		options = getResources().getStringArray(R.array.option);
 		ArrayAdapter<String> adapter = new OptionAdapter(this,R.layout.list_item, R.id.option, options);
 		fragmentManager = this.getSupportFragmentManager();
+		myFragment = new RulerFragment();
 		
 		backStart = (ImageButton)findViewById(R.id.back_start);
 		backStart.setOnClickListener(back);
@@ -51,7 +53,7 @@ public class AboutActivity extends FragmentActivity {
 		listView = (ListView)findViewById(R.id.listView);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OptionClicked());
-
+		
 	}
 	/**
 	 * 返回按钮的单击事件
@@ -81,7 +83,7 @@ public class AboutActivity extends FragmentActivity {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 				long arg3) {
 			Log.i("position", position+"");
-			Fragment myFragment = new RulerFragment() ;
+			
 			switch(position){
 			case 0:myFragment = new RulerFragment();break;
 			case 1:myFragment = new FAQFragment();break;
