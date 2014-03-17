@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jelly.dishu"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="2.01" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -18,26 +18,26 @@
         <activity
             android:name="com.jelly.dishu.MainActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Black.NoTitleBar" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
             android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.jelly.dishu.StatisticsActivity"
             android:label="@string/title_activity_statistics"
-            android:theme="@android:style/Theme.Black.NoTitleBar" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
             android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.jelly.dishu.AboutActivity"
             android:label="@string/title_activity_about"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="com.jelly.dishu.StartActivity"
-            android:label="@string/title_activity_start"
+
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

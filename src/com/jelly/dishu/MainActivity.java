@@ -6,7 +6,9 @@ import com.jelly.dishu.tool.DSEngine;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Service;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,25 +17,26 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+@SuppressLint("UseSparseArrays")
 public class MainActivity extends Activity {
 	ImageView im1, im2, im3, im4, im5, im6, im7, im8, im9;
 	Random r = new Random();
 	int score = 0;
 	volatile int count = 30;
-	boolean continueYesNo = true;
 	TextView tv;
 	Thread mainThread;
+	AudioManager audio;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
 		setContentView(R.layout.activity_main);
+
+		audio = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
+
 		tv = (TextView) findViewById(R.id.textView1);
 		im1 = (ImageView) findViewById(R.id.ImageView01);
 		im2 = (ImageView) findViewById(R.id.ImageView02);
@@ -200,7 +203,20 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		closeMusic();
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_VOLUME_UP:
+			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND
+							| AudioManager.FLAG_SHOW_UI);
+			return true;
+		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND
+							| AudioManager.FLAG_SHOW_UI);
+			return true;
+		default:
+			closeMusic();
+		}
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -211,6 +227,5 @@ public class MainActivity extends Activity {
 		Intent bgmusic = new Intent(getApplicationContext(), DSMusic.class);
 		MainActivity.this.stopService(bgmusic);
 	}
-	
 
 }

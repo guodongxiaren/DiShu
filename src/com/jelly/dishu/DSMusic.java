@@ -1,12 +1,13 @@
 package com.jelly.dishu;
 
 
-import com.jelly.dishu.tool.DSEngine;
-
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+
+import com.jelly.dishu.tool.DSEngine;
 
 public class DSMusic extends Service {
 	public static boolean isRunning = false;
@@ -15,6 +16,7 @@ public class DSMusic extends Service {
 	public IBinder onBind(Intent arg0) {
 		return null;
 	}
+	@SuppressLint("UseSparseArrays")
 	@Override
 	public void onCreate() {
 		super.onCreate();
