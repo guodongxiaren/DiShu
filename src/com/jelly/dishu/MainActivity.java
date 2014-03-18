@@ -20,9 +20,8 @@ import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-@SuppressLint("UseSparseArrays")
 public class MainActivity extends Activity {
-	ImageView im1, im2, im3, im4, im5, im6, im7, im8, im9;
+	ImageView[] im = new ImageView[9];
 	Random r = new Random();
 	int score = 0;
 	volatile int count = 30;
@@ -38,26 +37,19 @@ public class MainActivity extends Activity {
 		audio = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
 
 		tv = (TextView) findViewById(R.id.textView1);
-		im1 = (ImageView) findViewById(R.id.ImageView01);
-		im2 = (ImageView) findViewById(R.id.ImageView02);
-		im3 = (ImageView) findViewById(R.id.ImageView03);
-		im4 = (ImageView) findViewById(R.id.ImageView04);
-		im5 = (ImageView) findViewById(R.id.ImageView05);
-		im6 = (ImageView) findViewById(R.id.ImageView06);
-		im7 = (ImageView) findViewById(R.id.ImageView07);
-		im8 = (ImageView) findViewById(R.id.imageView1);
-		im9 = (ImageView) findViewById(R.id.ImageView08);
-
-		im1.setOnTouchListener(clickedView);
-		im2.setOnTouchListener(clickedView);
-		im3.setOnTouchListener(clickedView);
-		im4.setOnTouchListener(clickedView);
-		im5.setOnTouchListener(clickedView);
-		im6.setOnTouchListener(clickedView);
-		im7.setOnTouchListener(clickedView);
-		im8.setOnTouchListener(clickedView);
-		im9.setOnTouchListener(clickedView);
-
+		// im1.setOnFocusChangeListener(l)
+		im[0] = (ImageView) findViewById(R.id.ImageView01);
+		im[1] = (ImageView) findViewById(R.id.ImageView02);
+		im[2] = (ImageView) findViewById(R.id.ImageView03);
+		im[3] = (ImageView) findViewById(R.id.ImageView04);
+		im[4]= (ImageView) findViewById(R.id.ImageView05);
+		im[5] = (ImageView) findViewById(R.id.ImageView06);
+		im[6] = (ImageView) findViewById(R.id.ImageView07);
+		im[7] = (ImageView) findViewById(R.id.imageView1);
+		im[8]= (ImageView) findViewById(R.id.ImageView08);
+		
+		for(int i=0;i<9;i++)
+			im[i].setOnTouchListener(clickedView);
 		mainThread = new Thread(new MyThread());
 		mainThread.start();
 
@@ -141,62 +133,11 @@ public class MainActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			switch (msg.what) {
-			case 1:
-				im1.setVisibility(View.VISIBLE);
-				break;
-			case 2:
-				im2.setVisibility(View.VISIBLE);
-				break;
-			case 3:
-				im3.setVisibility(View.VISIBLE);
-				break;
-			case 4:
-				im4.setVisibility(View.VISIBLE);
-				break;
-			case 5:
-				im5.setVisibility(View.VISIBLE);
-				break;
-			case 6:
-				im6.setVisibility(View.VISIBLE);
-				break;
-			case 7:
-				im7.setVisibility(View.VISIBLE);
-				break;
-			case 8:
-				im8.setVisibility(View.VISIBLE);
-				break;
-			case 9:
-				im9.setVisibility(View.VISIBLE);
-				break;
-			case -1:
-				im1.setVisibility(View.INVISIBLE);
-				break;
-			case -2:
-				im2.setVisibility(View.INVISIBLE);
-				break;
-			case -3:
-				im3.setVisibility(View.INVISIBLE);
-				break;
-			case -4:
-				im4.setVisibility(View.INVISIBLE);
-				break;
-			case -5:
-				im5.setVisibility(View.INVISIBLE);
-				break;
-			case -6:
-				im6.setVisibility(View.INVISIBLE);
-				break;
-			case -7:
-				im7.setVisibility(View.INVISIBLE);
-				break;
-			case -8:
-				im8.setVisibility(View.INVISIBLE);
-				break;
-			case -9:
-				im9.setVisibility(View.INVISIBLE);
-				break;
-			}
+			int i = msg.what;
+			if(i>0)
+				im[i-1].setVisibility(View.VISIBLE);
+			if(i<0)
+				im[-1-i].setVisibility(View.INVISIBLE);
 		}
 
 	};
@@ -226,6 +167,12 @@ public class MainActivity extends Activity {
 		 */
 		Intent bgmusic = new Intent(getApplicationContext(), DSMusic.class);
 		MainActivity.this.stopService(bgmusic);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent e) {
+		Log.i("onTouchEvent", e.getX() + ":" + e.getY());
+		return super.onTouchEvent(e);
 	}
 
 }
