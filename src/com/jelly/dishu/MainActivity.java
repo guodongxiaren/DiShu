@@ -12,6 +12,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.EventLog.Event;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -20,6 +21,7 @@ import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+@SuppressLint("NewApi")
 public class MainActivity extends Activity {
 	ImageView[] im = new ImageView[9];
 	Random r = new Random();
@@ -28,28 +30,28 @@ public class MainActivity extends Activity {
 	TextView tv;
 	Thread mainThread;
 	AudioManager audio;
+	float viewX = -1f, viewY = -1f;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		// 控制系统音量的对象
 		audio = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
 
 		tv = (TextView) findViewById(R.id.textView1);
-		// im1.setOnFocusChangeListener(l)
 		im[0] = (ImageView) findViewById(R.id.ImageView01);
 		im[1] = (ImageView) findViewById(R.id.ImageView02);
 		im[2] = (ImageView) findViewById(R.id.ImageView03);
 		im[3] = (ImageView) findViewById(R.id.ImageView04);
-		im[4]= (ImageView) findViewById(R.id.ImageView05);
+		im[4] = (ImageView) findViewById(R.id.ImageView05);
 		im[5] = (ImageView) findViewById(R.id.ImageView06);
 		im[6] = (ImageView) findViewById(R.id.ImageView07);
 		im[7] = (ImageView) findViewById(R.id.imageView1);
-		im[8]= (ImageView) findViewById(R.id.ImageView08);
-		
-		for(int i=0;i<9;i++)
-			im[i].setOnTouchListener(clickedView);
+		im[8] = (ImageView) findViewById(R.id.ImageView08);
+
+		// for (int i = 0; i < 9; i++)
+		// im[i].setOnTouchListener(clickedView);
 		mainThread = new Thread(new MyThread());
 		mainThread.start();
 
@@ -84,8 +86,6 @@ public class MainActivity extends Activity {
 
 	public class MyThread implements Runnable {
 
-		private static final String TAG = "tag";
-
 		@Override
 		public void run() {
 
@@ -101,19 +101,11 @@ public class MainActivity extends Activity {
 					Message msg2 = new Message();
 					msg2.what = -a;
 					handler.sendMessage(msg2);
-					Log.i(TAG, count + "");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-			Intent intent = new Intent(MainActivity.this,
-					StatisticsActivity.class);
-			Bundle b = new Bundle();
-			b.putInt("score", score);
-			intent.putExtras(b);
-			startActivity(intent);
-			MainActivity.this.finish();
-			closeMusic();
+			gameOver();
 		}
 	}
 
@@ -134,10 +126,18 @@ public class MainActivity extends Activity {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			int i = msg.what;
-			if(i>0)
-				im[i-1].setVisibility(View.VISIBLE);
-			if(i<0)
-				im[-1-i].setVisibility(View.INVISIBLE);
+			if (i > 0) {
+				im[i - 1].setVisibility(View.VISIBLE);
+				viewX = im[i - 1].getX();
+				viewY = im[i - 1].getY();
+				Log.i("view", viewX + ":" + viewY);
+			}
+			if (i < 0) {
+				im[-1 - i].setVisibility(View.INVISIBLE);
+				viewX = -1f;
+				viewY = -1f;
+			}
+
 		}
 
 	};
@@ -171,8 +171,31 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
+		if (e.getAction() == MotionEvent.ACTION_DOWN)
+			if (viewX >= 0 && viewY >= 0 && viewX <= e.getX()
+					&& viewX <= viewX + 81 && viewY <= e.getY()
+					&& viewY <= viewY + 118) {
+				Message msg = new Message();
+				score += 50;
+				msg.what = score;
+				scoreHandler.sendMessage(msg);
+				viewX = -1f;
+				viewY = -1f;
+			} else {
+				count=0;
+			}
 		Log.i("onTouchEvent", e.getX() + ":" + e.getY());
 		return super.onTouchEvent(e);
+	}
+
+	public void gameOver() {
+		Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
+		Bundle b = new Bundle();
+		b.putInt("score", score);
+		intent.putExtras(b);
+		startActivity(intent);
+		MainActivity.this.finish();
+		closeMusic();
 	}
 
 }
