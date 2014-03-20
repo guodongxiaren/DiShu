@@ -31,95 +31,105 @@ public class AboutActivity extends FragmentActivity {
 	String[] options;
 	ListView listView;
 	LayoutInflater inflater;
-	int[] icons = {R.drawable.rule,R.drawable.wenhao,
-			R.drawable.tanhao,R.drawable.xinfeng};
+	int[] icons = { R.drawable.rule, R.drawable.wenhao, R.drawable.tanhao,
+			R.drawable.xinfeng };
 	FragmentManager fragmentManager;
-	Fragment myFragment ;
+	FragmentTransaction fragmentTransaction;
+	Fragment[] mFragments;
 	ImageButton backStart;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
-		
-		inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		inflater = (LayoutInflater) this
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		//StringArrays
 		options = getResources().getStringArray(R.array.option);
-		ArrayAdapter<String> adapter = new OptionAdapter(this,R.layout.list_item, R.id.option, options);
+		ArrayAdapter<String> adapter = new OptionAdapter(this,
+				R.layout.list_item, R.id.option, options);
+		mFragments = new Fragment[4];
 		fragmentManager = this.getSupportFragmentManager();
-		myFragment = new RulerFragment();
-		
-		backStart = (ImageButton)findViewById(R.id.back_start);
+		mFragments[0] = new RulerFragment();
+		mFragments[1] = new FAQFragment();
+		mFragments[2] = new AboutFragment();
+		mFragments[3] = new FeedFragment();
+		fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.container, mFragments[0]).commit();
+		backStart = (ImageButton) findViewById(R.id.back_start);
 		backStart.setOnClickListener(back);
-		
-		listView = (ListView)findViewById(R.id.listView);
+
+		listView = (ListView) findViewById(R.id.listView);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OptionClicked());
-		
+
 	}
+
 	/**
 	 * 返回按钮的单击事件
 	 */
 	OnClickListener back = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(AboutActivity.this,StartActivity.class);
+			Intent intent = new Intent(AboutActivity.this, StartActivity.class);
 			startActivity(intent);
 			AboutActivity.this.finish();
 		}
 	};
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.about, menu);
 		return true;
 	}
+
 	/**
 	 * 
 	 * @author Acer
-	 *
+	 * 
 	 */
-	class OptionClicked implements OnItemClickListener{
+	class OptionClicked implements OnItemClickListener {
 
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 				long arg3) {
-			Log.i("position", position+"");
-			
-			switch(position){
-			case 0:myFragment = new RulerFragment();break;
-			case 1:myFragment = new FAQFragment();break;
-			case 2:myFragment = new AboutFragment(); break;
-			case 3:myFragment = new FeedFragment();break;
-			}
-			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			fragmentTransaction.replace(R.id.container, myFragment);
+			//必须重新获得fragment的事务对象，否则会异常关闭
+			FragmentTransaction fragmentTransaction = fragmentManager
+					.beginTransaction();
+			fragmentTransaction.replace(R.id.container, mFragments[position]);
 			fragmentTransaction.commit();
 		}
-		
+
 	}
+
 	/**
 	 * my adapter using to show ListView
+	 * 
 	 * @author Acer
-	 *
+	 * 
 	 */
-	class OptionAdapter extends ArrayAdapter<String>{
-		String[] options; 
+	class OptionAdapter extends ArrayAdapter<String> {
+		String[] options;
+
 		public OptionAdapter(Context context, int resource,
 				int textViewResourceId, String[] options) {
 			super(context, resource, textViewResourceId, options);
 			this.options = options;
 		}
+
 		@Override
 		public View getView(int position, View conview, ViewGroup parent) {
 			View view = inflater.inflate(R.layout.list_item, null);
-			ImageView im = (ImageView)view.findViewById(R.id.icon);
+			ImageView im = (ImageView) view.findViewById(R.id.icon);
 			im.setBackgroundResource(icons[position]);
-			TextView tv = (TextView)view.findViewById(R.id.option);
+			TextView tv = (TextView) view.findViewById(R.id.option);
 			tv.setText(options[position]);
-			tv.getPaint().setFakeBoldText(true);/// set Chinese is bold.
+			tv.getPaint().setFakeBoldText(true);// / set Chinese is bold.
 			return view;
 		}
-		
-	
+
 	}
 
 }

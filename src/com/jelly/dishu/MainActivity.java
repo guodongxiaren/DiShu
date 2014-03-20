@@ -12,7 +12,6 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.EventLog.Event;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
