@@ -12,7 +12,7 @@
     <string name="feedback">【建议反馈】</string>
     <string name="feedhint">注意:点击发送将发送一条短信到开发者手机</string>
     <string name="hint_start">妈妈总是嫌我写作业，要抓我出去玩。我要藏起来，什么？你是来抓我的……雅蠛蝶！！！</string>
-    <string name="ruler">【游戏规则】\n游戏时间无上限，每次地鼠出现的时候，点击到它得50分，若您点击到其他地方则立即停止游戏。</string>
+    <string name="ruler">【游戏规则】\n游戏时间无上限，每次地鼠出现的时候，点击到它得50分，若您点击到其他地方则立即停止游戏。此之谓“变态打地鼠”也</string>
     <string name="faq">【常见问题】\n如果您发现游戏中存在问题，或者对本游戏有好的想法和建议，请点击下面的“建议反馈”选项，来进行反馈。\n	欢迎反馈,谢谢合作</string>
 
 </resources>

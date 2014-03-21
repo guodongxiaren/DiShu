@@ -2,34 +2,40 @@ package com.jelly.dishu;
 
 import java.util.Random;
 
-import com.jelly.dishu.tool.DSEngine;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Service;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
 	ImageView[] im = new ImageView[9];
 	Random r = new Random();
 	int score = 0;
-	volatile int count = 30;
+	volatile boolean running = true;
 	TextView tv;
 	Thread mainThread;
 	AudioManager audio;
 	float viewX = -1f, viewY = -1f;
+	boolean excel = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,20 +55,8 @@ public class MainActivity extends Activity {
 		im[7] = (ImageView) findViewById(R.id.imageView1);
 		im[8] = (ImageView) findViewById(R.id.ImageView08);
 
-		// for (int i = 0; i < 9; i++)
-		// im[i].setOnTouchListener(clickedView);
 		mainThread = new Thread(new MyThread());
 		mainThread.start();
-
-		DSEngine.musicThread = new Thread() {
-			public void run() {
-				Intent bgmusic = new Intent(getApplicationContext(),
-						DSMusic.class);
-				startService(bgmusic);
-				DSEngine.context = getApplicationContext();
-			}
-		};
-		DSEngine.musicThread.start();
 	}
 
 	/**
@@ -87,9 +81,8 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void run() {
-
-			while (count != 0) {
-				count--;
+			startMusic();
+			while (running) {
 				try {
 					Thread.sleep(1000);
 					int a = r.nextInt(9) + 1;
@@ -108,6 +101,9 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/*
+	 * 更新计分板的handler
+	 */
 	@SuppressLint("HandlerLeak")
 	Handler scoreHandler = new Handler() {
 
@@ -119,6 +115,10 @@ public class MainActivity extends Activity {
 		}
 
 	};
+
+	/*
+	 * 改变地鼠imagView可视状态，以及实现停止游戏的handler
+	 */
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 		@Override
@@ -130,17 +130,26 @@ public class MainActivity extends Activity {
 				viewX = im[i - 1].getX();
 				viewY = im[i - 1].getY();
 				Log.i("view", viewX + ":" + viewY);
-			}
-			if (i < 0) {
+			} else if (i < 0) {
 				im[-1 - i].setVisibility(View.INVISIBLE);
 				viewX = -1f;
 				viewY = -1f;
+			} else if (i == 0) {
+				Toast toast = Toast.makeText(MainActivity.this,"您未点到，游戏结束", Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.BOTTOM, 0, 0);
+				toast.show();
+				createDialog();
 			}
 
 		}
 
 	};
 
+	/*
+	 * 覆写物理按键：音量加、减，返回键
+	 * 
+	 * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
+	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
@@ -160,6 +169,17 @@ public class MainActivity extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 
+	/*
+	 * 开启背景音乐
+	 */
+	public void startMusic() {
+		Intent bgmusic = new Intent(getApplicationContext(), DSMusic.class);
+		MainActivity.this.startService(bgmusic);
+	}
+
+	/*
+	 * 关闭背景音乐
+	 */
 	public void closeMusic() {
 		/*
 		 * close the background music 关闭背景音乐
@@ -168,6 +188,12 @@ public class MainActivity extends Activity {
 		MainActivity.this.stopService(bgmusic);
 	}
 
+	
+	/*
+	 * 覆写触屏事件
+	 * 
+	 * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
+	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
 		if (e.getAction() == MotionEvent.ACTION_DOWN)
@@ -181,20 +207,67 @@ public class MainActivity extends Activity {
 				viewX = -1f;
 				viewY = -1f;
 			} else {
-				count=0;
+				running = false;
 			}
 		Log.i("onTouchEvent", e.getX() + ":" + e.getY());
 		return super.onTouchEvent(e);
 	}
 
+	/*
+	 * 游戏结束时调用
+	 */
 	public void gameOver() {
-		Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
-		Bundle b = new Bundle();
-		b.putInt("score", score);
-		intent.putExtras(b);
-		startActivity(intent);
-		MainActivity.this.finish();
 		closeMusic();
+		Message msg = new Message();
+		msg.what = 0;
+		handler.sendMessage(msg);
+	}
+
+	/*
+	 * 游戏结束后显示的对话框
+	 */
+	public void createDialog() {
+		SharedPreferences sp = getSharedPreferences("sp", MODE_PRIVATE);
+		int s = sp.getInt("MAX_SCORE", -1);
+		Log.i("max", s + "");
+		if (s == -1 || s < score) {
+			Editor editor = sp.edit();
+			editor.putInt("MAX_SCORE", score);
+			boolean b1 = editor.commit();
+			Log.i("bbb", b1 + "");
+			excel = true;
+		}
+
+		AlertDialog.Builder builder = new Builder(MainActivity.this);
+		if (excel)
+			builder.setTitle("恭喜！破记录");
+		else
+			builder.setTitle("最高纪录为" + s);
+		builder.setMessage("本次得分 " + score + "！");
+		builder.setPositiveButton("退出", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				MainActivity.this.finish();
+			}
+		});
+		builder.setNegativeButton("再来一局",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Message msg = new Message();
+						msg.what = 0;
+						score = 0;
+						scoreHandler.sendMessage(msg);
+						running = true;
+						mainThread = new Thread(new MyThread());
+						mainThread.start();
+					}
+				});
+		builder.setCancelable(false);
+		builder.create().show();
 	}
 
 }
