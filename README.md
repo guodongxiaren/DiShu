@@ -9,3 +9,6 @@ DiShu
 ![logo](https://github.com/guodongxiaren/DiShu/raw/alpha/res/drawable-mdpi/dishu.png)
 ##游戏规则
 每隔几秒屏幕上会出现一只地鼠，请您快速地点击它，若您点击了而未点击到它，则游戏立即终止。但若你不点击则不停止。由于手指触点不如鼠标精确，所以需要玩家精确点击。<br>
+
+
+
